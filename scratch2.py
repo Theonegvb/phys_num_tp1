@@ -1,5 +1,4 @@
 import numpy as np
-import scipy as scp
 import matplotlib.pyplot as plt
 from numpy import linspace, cos, pi, tan, ones, copy, random
 
@@ -52,12 +51,12 @@ def f(x):
     return 1 / (2 * pi * rElectron ** 2 * mElectron * nElectron * b ** -2 *
                 (np.log((2 * mElectron * b ** 2 * g ** 2 * tMax(g))/(i ** 2)) - 2 * b ** 2))
 
+
 def gaussianQuadrature(N, a, b):
     x, w = gaussxw(N)
     xp = 0.5 * (b - a) * x + 0.5 * (b + a)
     wp = 0.5 * (b - a) * w
 
-    # Perform the integration
     s = 0
     for k in range(N):
         s += wp[k] * f(xp[k])
@@ -77,6 +76,7 @@ def optimalQuadrature(a, b):
         if N > 1000:
             break
     return N
+
 
 if __name__ == '__main__':
     N = optimalQuadrature(0, 240)

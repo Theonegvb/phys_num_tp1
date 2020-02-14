@@ -1,4 +1,3 @@
-# Tests
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as scp
@@ -141,10 +140,6 @@ class Integration_trapezes(Integration):
         return (aire_2N - aire_N)/3
 
 
-
-
-
-
 def tMax(g):
     mElectron = 0.51099895000
     mPronton = 938.272
@@ -166,11 +161,22 @@ def S_col_eau(x):
     g = gamma(x)
     b = beta(g)
 
-
     return 1 / (2 * pi * rElectron ** 2 * mElectron * nElectron * b ** -2 *
                 (np.log((2 * mElectron * b ** 2 * g ** 2 * tMax(g))/(i ** 2)) - 2 * b ** 2))
 
 
-integration_2 = Integration_trapezes(S_col_eau, bornes=[0.001, 100], nombre_de_pas=1000)
+if __name__ == "__main__":
+    #integration_2 = Integration_trapezes(S_col_eau, bornes=[0.001, 100], nombre_de_pas=1000)
+    #print(integration_2.aire_totale())
+    protons = random.normal(240, 3, 10000)
 
-print(integration_2.aire_totale())
+    distances = []
+    for proton in protons:
+        print(proton)
+        integration = Integration_trapezes(S_col_eau, bornes=[0.0001, proton], nombre_de_pas=1000)
+        distances.append(integration.aire_totale())
+
+    plt.hist(distances, 100)
+    plt.xlabel(r'Distance [$cm$]')
+    plt.legend('show')
+    plt.show()
