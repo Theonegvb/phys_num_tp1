@@ -1,38 +1,32 @@
 import matplotlib.pyplot as plt
 import numpy as np
+from numpy import pi
+
+#%matplotlib inline
 
 
-def protonSpeed(protonEnergy):
-    mProton = 938.27208816
-    protonSpeed = 2.998e+10 * np.sqrt(1 - (protonEnergy / mProton + 1) ** -2)
-    return protonSpeed
+def beta(g):
+    return np.sqrt(1 - 1 / (g ** 2))
 
 
-def beta(protonSpeed):
-    return protonSpeed / 2.998e+10
+def gamma(t):
+    mProton = 938.272
+    return t / mProton + 1
 
 
-def gamma(protonEnergy):
-    mProton = 938.27208816
-    return (protonEnergy / mProton) + 1
-
-
-def tMax(protonSpeed):
+def tMax(g):
     mElectron = 0.51099895000
-    mProton = 938.27208816
-    g = gamma(protonSpeed)
-    return (2 * mElectron * (g - 1)) / (
-                1 + 2 * g * (mElectron / mProton) + (mElectron / mProton) ** 2)
+    mPronton = 938.272
+    return (2 * mElectron * ((g ** 2) - 1)) / (1 + 2 * g * (mElectron / mPronton) + (mElectron / mPronton) ** 2)
 
 
 def stoppingPower(nElectron, protonEnergy, i):
-    rElectron = 2.81794033e-15 * 100
+    rElectron = 2.81794033e-13
     mElectron = 0.51099895000
-    pSpeed = protonSpeed(protonEnergy)
-    g = gamma(pSpeed)
-    b = beta(pSpeed)
-    return 2 * np.pi * rElectron ** 2 * mElectron * nElectron * (1 / (b ** 2)) * \
-           (np.log((2 * mElectron * (b ** 2) * (g ** 2) * tMax(pSpeed)) / (i ** 2)) - 2 * (b ** 2))
+    g = gamma(protonEnergy)
+    b = beta(g)
+    return 2 * pi * rElectron ** 2 * mElectron * nElectron * b ** -2 *\
+           (np.log((2 * mElectron * b ** 2 * g ** 2 * tMax(g))/(i ** 2)) - 2 * b ** 2)
 
 
 if __name__ == '__main__':
