@@ -33,12 +33,17 @@ def f(x):
 
 
 energies = list(np.linspace(75, 0, 10000))
-ss = np.array([])
-for i in range(len(energies) - 1):
-    s = integrate.quad(f, energies[i], energies[i + 1])[0]
-    ss = np.append(ss, s)
-ss = list(np.cumsum(ss))
-energies.pop(0)
 
-plt.plot(energies, ss)
+depot = np.array([])
+distanceTotale = np.array([])
+
+for i in range(len(energies) - 1):
+    pas = integrate.quad(f, energies[i + 1], energies[i])[0]
+    depot = np.append(depot, (energies[i] - energies[i + 1]) / pas)
+    distanceTotale = np.append(distanceTotale, pas)
+distanceTotale = list(np.cumsum(distanceTotale))
+
+plt.plot(distanceTotale, depot)
+plt.title("Dépot d'énergie en fonction de la profondeur pour 75 MeV.")
+plt.axis(xmin=0, ymin=0, ymax=1000)
 plt.show()
